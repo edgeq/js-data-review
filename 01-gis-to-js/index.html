@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <title>GIS to JS Charts</title>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <script>
+      const xLabels = [];
+      const yTemps = [];
+      // getData();
+      makeChart();
+      async function makeChart() {
+        await getData();
+        const ctx = document.getElementById("myChart").getContext("2d");
+        const chart = new Chart(ctx, {
+          // The type of chart we want to create
+          type: "line",
+
+          // The data for our dataset
+          data: {
+            labels: xLabels,
+            datasets: [
+              {
+                label: "Global Avg Temp",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "rgb(255, 99, 132)",
+                data: yTemps
+              }
+            ]
+          }
+        });
+      }
+      async function getData() {
+        const response = await fetch("ZonAnn.Ts+dSST.csv");
+        const data = await response.text();
+        // console.log(data);
+
+        const table = data.split("\n").slice(1);
+
+        table.forEach(row => {
+          const cols = row.split(",");
+          const year = cols[0];
+          xLabels.push(year);
+          const temp = cols[1];
+          yTemps.push(parseFloat(temp) + 14);
+          console.log(year, temp);
+        });
+      }
+
+      // ARRAY OF THINGS AS INDEPENDENT STUDY
+
+      // getAotData();
+      // async function getAotData() {
+      //   const response = await fetch("test.csv");
+      //   const data = await response.text();
+
+      //   const table = data.split("\n").slice(1);
+
+      //   table.forEach(row => {
+      //     const cols = row.split(",");
+      //     const timestamp = cols[0];
+      //     const subsystem = cols[2];
+      //     const parameter = cols[4];
+      //     const value = cols[6];
+      //     console.log(timestamp, subsystem, parameter, value);
+      //   });
+      // }
+    </script>
+  </body>
+</html>
