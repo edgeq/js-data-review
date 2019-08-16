@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import BasicChart from "./BasicChart";
 import TempChart from "./TempChart";
-import axios from "axios";
 import "./App.css";
 
 export default class App extends Component {
@@ -22,7 +21,7 @@ export default class App extends Component {
     return (
       <div className="App">
         <BasicChart />
-        <TempChart data={this.getData} />
+        <TempChart />
       </div>
     );
   }
